@@ -6,11 +6,17 @@
 /*   By: brandebr <brandebr@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 19:09:57 by brandebr          #+#    #+#             */
-/*   Updated: 2023/07/06 19:31:55 by brandebr         ###   ########.fr       */
+/*   Updated: 2023/07/10 19:50:48 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+void clear_buffer(char *buffer)
+{
+	if (buffer)
+		free(buffer);
+}
 
 char	*read_file(int fd)
 {
@@ -38,27 +44,128 @@ char	*read_file(int fd)
 	free(store);
 	return (warehouse);
 }
+/*
+char	*get_line(char *buffer)
+{
+	char	*line;
+	int	i;
 
+	i = 0;
+	buffer = read_file(*buffer);
+	if (!buffer)
+		return (NULL);
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	line = malloc((i + 2) * sizeof(char));
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (buffer[i] && buffer[i] != '\n')
+	{
+		line[i] = buffer[i];
+		i++;
+	}
+	if (buffer[i] == '\n')
+		line[++i] = '\n';
+	clear_buffer(buffer);
+	return (line);
+}*/
+
+char *get_line(char *buffer)
+{
+    char *line;
+    int i = 0;
+
+    if (!buffer)
+        return NULL;
+
+    while (buffer[i] && buffer[i] != '\n')
+        i++;
+
+    line = malloc((i + 2) * sizeof(char));
+    if (!line)
+        return NULL;
+
+    i = 0;
+    while (buffer[i] && buffer[i] != '\n')
+    {
+        line[i] = buffer[i];
+        i++;
+    }
+
+    if (buffer[i] == '\n')
+        line[i++] = '\n';
+
+    line[i] = '\0';
+
+    return line;
+}
+
+char *get_next_line(int fd)
+{
+    static char *buffer = NULL;
+    char *line;
+
+    if (fd < 0 || BUFFER_SIZE <= 0)
+        return NULL;
+    if (!buffer)
+        buffer = read_file(fd);
+    if (!buffer)
+        return NULL;
+    line = get_line(buffer);
+    if (!line)
+        return NULL;
+    char *temp = buffer;
+    buffer = strchr(buffer, '\n');
+
+    if (buffer)
+    {
+        *buffer = '\0';
+        buffer++;
+    }
+    else
+    {
+        clear_buffer(temp);
+        buffer = NULL;
+    }
+    return line;
+}
+
+/*
 int	main(void)
 {
 	char	*line;
-	int	fd;
+	char	fd;
 	//int	i = 0;
 
     fd = open("file.txt", O_RDONLY);
-    line = read_file(fd);
+	//line =  get_line(&fd);
+	line =  get_next_line(fd);
+    // line = read_file(fd);
     printf("%s", line);
-/*
-    while (line && *line != '\0' && i++ <  30)
-    {
-        printf("output============%s\n", line);
-        free(line);
-        line = get_next_line(fd);
-    }
-*/
     close(fd);
     return 0;
 }
+*/
+int main(void)
+{
+    char *line;
+    int fd;
+
+    fd = open("file.txt", O_RDONLY);
+    line = get_next_line(fd);
+
+    while (line)
+    {
+        printf("%s\n", line);
+        free(line);
+        line = get_next_line(fd);
+    }
+
+    close(fd);
+    return 0;
+}
+
 /*
 // join and free
 char	*ft_free(char *buffer, char *buf)
