@@ -6,7 +6,7 @@
 /*   By: brandebr <brandebr@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 19:09:57 by brandebr          #+#    #+#             */
-/*   Updated: 2023/07/10 19:50:48 by brandebr         ###   ########.fr       */
+/*   Updated: 2023/07/14 13:37:33 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,26 +78,20 @@ char *get_line(char *buffer)
 
     if (!buffer)
         return NULL;
-
     while (buffer[i] && buffer[i] != '\n')
         i++;
-
     line = malloc((i + 2) * sizeof(char));
     if (!line)
         return NULL;
-
     i = 0;
     while (buffer[i] && buffer[i] != '\n')
     {
         line[i] = buffer[i];
         i++;
     }
-
-    if (buffer[i] == '\n')
-        line[i++] = '\n';
-
+   // if (buffer[i] == '\n')
+     //   line[i++] = '\n';
     line[i] = '\0';
-
     return line;
 }
 
@@ -117,7 +111,6 @@ char *get_next_line(int fd)
         return NULL;
     char *temp = buffer;
     buffer = strchr(buffer, '\n');
-
     if (buffer)
     {
         *buffer = '\0';
@@ -147,25 +140,32 @@ int	main(void)
     return 0;
 }
 */
+/*
+
+
+
 int main(void)
+
 {
-    char *line;
-    int fd;
+	char *line;
+	int fd;
 
-    fd = open("file.txt", O_RDONLY);
-    line = get_next_line(fd);
+	fd = open("file.txt", O_RDONLY);
+	line = get_next_line(fd);
 
-    while (line)
-    {
-        printf("%s\n", line);
-        free(line);
-        line = get_next_line(fd);
-    }
+	while (line)
+	{
+		printf("%s\n", line);
+		free(line);
+		line = get_next_line(fd);
+	}
 
-    close(fd);
-    return 0;
+	close(fd);
+	return 0;
 }
 
+
+*/
 /*
 // join and free
 char	*ft_free(char *buffer, char *buf)
