@@ -6,7 +6,7 @@
 /*   By: brandebr <brandebr@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 19:09:57 by brandebr          #+#    #+#             */
-/*   Updated: 2023/07/14 13:37:33 by brandebr         ###   ########.fr       */
+/*   Updated: 2023/07/17 20:50:23 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,14 @@ char	*read_file(int fd)
 	char	*warehouse;
 	int	bytes_read;
 
+	warehouse = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0))
 		return (NULL);
-	store = malloc(BUFFER_SIZE + 1 * sizeof(char));
+	store = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!store)
 		return (NULL);
 	bytes_read = 1;
-	while (bytes_read > 0)
+	while (bytes_read > 0/* && !ft_strchr(warehouse, '\n')*/)
 	{
 		bytes_read = read(fd, store, BUFFER_SIZE);
 		if (bytes_read == -1)
@@ -38,38 +39,12 @@ char	*read_file(int fd)
 			free(store);
 			return (NULL);
 		}
-		store[bytes_read] = 0;
-		warehouse = ft_strjoin(warehouse, store); 
+		store[bytes_read] = '\0';
+		warehouse = ft_strjoin(warehouse, store); // Si strjoin  devuelve NULL me tengo que ir
 	}
 	free(store);
 	return (warehouse);
 }
-/*
-char	*get_line(char *buffer)
-{
-	char	*line;
-	int	i;
-
-	i = 0;
-	buffer = read_file(*buffer);
-	if (!buffer)
-		return (NULL);
-	while (buffer[i] && buffer[i] != '\n')
-		i++;
-	line = malloc((i + 2) * sizeof(char));
-	if (!line)
-		return (NULL);
-	i = 0;
-	while (buffer[i] && buffer[i] != '\n')
-	{
-		line[i] = buffer[i];
-		i++;
-	}
-	if (buffer[i] == '\n')
-		line[++i] = '\n';
-	clear_buffer(buffer);
-	return (line);
-}*/
 
 char *get_line(char *buffer)
 {
@@ -80,7 +55,9 @@ char *get_line(char *buffer)
         return NULL;
     while (buffer[i] && buffer[i] != '\n')
         i++;
-    line = malloc((i + 2) * sizeof(char));
+    if (buffer[i] == '\n')
+	    i++;
+    line = malloc((i + 1) * sizeof(char)); // si el while ha fallado porque ya no hay \n solo tines que guardar 1
     if (!line)
         return NULL;
     i = 0;
@@ -89,8 +66,8 @@ char *get_line(char *buffer)
         line[i] = buffer[i];
         i++;
     }
-   // if (buffer[i] == '\n')
-     //   line[i++] = '\n';
+    if (buffer[i] != '\0')
+        line[i++] = '\n';
     line[i] = '\0';
     return line;
 }
@@ -101,8 +78,8 @@ char *get_next_line(int fd)
     char *line;
 
     if (fd < 0 || BUFFER_SIZE <= 0)
-        return NULL;
-    if (!buffer)
+        return (NULL);
+    if (!buffer || !ft_strchr(buffer, '\n'))
         buffer = read_file(fd);
     if (!buffer)
         return NULL;
@@ -110,7 +87,7 @@ char *get_next_line(int fd)
     if (!line)
         return NULL;
     char *temp = buffer;
-    buffer = strchr(buffer, '\n');
+    buffer = ft_strchr(buffer, '\n');   // Hola que tal estas
     if (buffer)
     {
         *buffer = '\0';
@@ -120,9 +97,27 @@ char *get_next_line(int fd)
     {
         clear_buffer(temp);
         buffer = NULL;
+	line = NULL;
     }
     return line;
 }
+
+/*
+int main(void)
+{
+	char *line = "Hola";
+	int fd;
+
+	fd = open("file.txt", O_RDONLY);
+	while (line)
+	{
+		line = get_next_line(fd);
+		printf("%s", line);
+		//free(line);
+	}
+	close(fd);
+	return 0;
+}*/
 
 /*
 int	main(void)
@@ -139,32 +134,6 @@ int	main(void)
     close(fd);
     return 0;
 }
-*/
-/*
-
-
-
-int main(void)
-
-{
-	char *line;
-	int fd;
-
-	fd = open("file.txt", O_RDONLY);
-	line = get_next_line(fd);
-
-	while (line)
-	{
-		printf("%s\n", line);
-		free(line);
-		line = get_next_line(fd);
-	}
-
-	close(fd);
-	return 0;
-}
-
-
 */
 /*
 // join and free

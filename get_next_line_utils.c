@@ -6,7 +6,7 @@
 /*   By: brandebr <brandebr@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 19:31:22 by brandebr          #+#    #+#             */
-/*   Updated: 2023/07/06 19:52:27 by brandebr         ###   ########.fr       */
+/*   Updated: 2023/07/17 20:34:10 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t	ft_strlen(const char *str)
 	size_t	i;
 
 	i = 0;
-	while (*str++)
+	while (str[i] != '\0')
 		i++;
 	return (i);
 }
@@ -106,7 +106,6 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 		i++;
 	}
 	dst[i] = '\0';
-	i++;
 	return (ft_strlen(src));
 }
 

@@ -6,7 +6,7 @@
 /*   By: brandebr <brandebr@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:04:43 by brandebr          #+#    #+#             */
-/*   Updated: 2023/07/06 19:52:18 by brandebr         ###   ########.fr       */
+/*   Updated: 2023/07/17 16:07:45 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 2 
 # endif
 
 # include <stdlib.h>
