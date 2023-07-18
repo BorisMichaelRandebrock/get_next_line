@@ -6,7 +6,7 @@
 /*   By: brandebr <brandebr@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 19:31:22 by brandebr          #+#    #+#             */
-/*   Updated: 2023/07/17 20:34:10 by brandebr         ###   ########.fr       */
+/*   Updated: 2023/07/18 14:08:59 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,11 @@ char	*ft_strchr(char *s, int c)
 	return (NULL);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	int		i;
 	int		j;
 	char	*willy;
-
 
 	i = 0;
 	j = 0;
@@ -64,6 +63,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		j++;
 	}
 	willy[i] = '\0';
+	free(s1);
 	return (willy);
 }
 

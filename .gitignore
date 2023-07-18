@@ -7,3 +7,6 @@ a.out.dSYM/
 file.txt
 *.swp
 *.swo
+fsoares/
+*.c.swm
+*.c.swn

@@ -6,23 +6,48 @@
 /*   By: brandebr <brandebr@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 19:09:57 by brandebr          #+#    #+#             */
-/*   Updated: 2023/07/17 20:50:23 by brandebr         ###   ########.fr       */
+/*   Updated: 2023/07/18 19:06:12 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void clear_buffer(char *buffer)
+static char	*clear_buffer(char *buffer, char *line)
 {
-	if (buffer)
+	int	i;
+	int	j;
+	char	*willy;
+
+	i = ft_strlen(line);
+	j = ft_strlen(buffer);
+	if (j - i <= 0)
+	{
 		free(buffer);
+		return (NULL);
+	}
+	willy = malloc(j - i + 1);
+	if (!willy)
+	{
+		free(buffer);
+		return (NULL);
+	}
+	j = 0;
+	while(buffer[i] != '\0')
+	{
+		willy[j] = buffer[i];
+		j++;
+		i++;
+	}
+	willy[j] = '\0';
+	free(buffer);
+	return (willy);
 }
 
-char	*read_file(int fd)
+static char	*read_file(int fd)
 {
 	char	*store;
 	char	*warehouse;
-	int	bytes_read;
+	int		bytes_read;
 
 	warehouse = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0))
@@ -31,7 +56,7 @@ char	*read_file(int fd)
 	if (!store)
 		return (NULL);
 	bytes_read = 1;
-	while (bytes_read > 0/* && !ft_strchr(warehouse, '\n')*/)
+	while (bytes_read > 0)
 	{
 		bytes_read = read(fd, store, BUFFER_SIZE);
 		if (bytes_read == -1)
@@ -40,85 +65,82 @@ char	*read_file(int fd)
 			return (NULL);
 		}
 		store[bytes_read] = '\0';
-		warehouse = ft_strjoin(warehouse, store); // Si strjoin  devuelve NULL me tengo que ir
+		warehouse = ft_strjoin(warehouse, store); // Si strjoin 
 	}
 	free(store);
 	return (warehouse);
 }
 
-char *get_line(char *buffer)
+static char	*get_line(char *buffer)
 {
-    char *line;
-    int i = 0;
+	char	*line;
+	int		i;
 
-    if (!buffer)
-        return NULL;
-    while (buffer[i] && buffer[i] != '\n')
-        i++;
-    if (buffer[i] == '\n')
-	    i++;
-    line = malloc((i + 1) * sizeof(char)); // si el while ha fallado porque ya no hay \n solo tines que guardar 1
-    if (!line)
-        return NULL;
-    i = 0;
-    while (buffer[i] && buffer[i] != '\n')
-    {
-        line[i] = buffer[i];
-        i++;
-    }
-    if (buffer[i] != '\0')
-        line[i++] = '\n';
-    line[i] = '\0';
-    return line;
+	i = 0;
+	if (!buffer || buffer[i] == '\0')
+		return (NULL);
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	if (buffer[i] == '\n')
+		i++;
+	line = malloc((i + 1) * sizeof(char)); // whileque guardar 
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (buffer[i] && buffer[i] != '\n')
+	{
+		line[i] = buffer[i];
+		i++;
+	}
+	if (buffer[i] != '\0')
+		line[i++] = '\n';
+	line[i] = '\0';
+	return line;
 }
 
 char *get_next_line(int fd)
 {
-    static char *buffer = NULL;
-    char *line;
+	static char	*buffer = NULL;
+	char		*line;
+	int		i;
+	int		j;
+	char 		*temp;
 
-    if (fd < 0 || BUFFER_SIZE <= 0)
-        return (NULL);
-    if (!buffer || !ft_strchr(buffer, '\n'))
-        buffer = read_file(fd);
-    if (!buffer)
-        return NULL;
-    line = get_line(buffer);
-    if (!line)
-        return NULL;
-    char *temp = buffer;
-    buffer = ft_strchr(buffer, '\n');   // Hola que tal estas
-    if (buffer)
-    {
-        *buffer = '\0';
-        buffer++;
-    }
-    else
-    {
-        clear_buffer(temp);
-        buffer = NULL;
-	line = NULL;
-    }
-    return line;
+	i = 0;
+	j = 0;
+	temp = NULL;
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	if (!buffer || !ft_strchr(buffer, '\n'))
+		buffer = read_file(fd);
+	if (!buffer)
+		return NULL;
+	line = get_line(buffer);
+	if (!line)
+		return NULL;
+	if (buffer)
+		buffer = clear_buffer(buffer, line);
+	return line;
 }
-
 /*
+
 int main(void)
 {
-	char *line = "Hola";
+	char *line;
 	int fd;
 
-	fd = open("file.txt", O_RDONLY);
+	fd = open("./fsoares/variable_nls.txt", O_RDONLY);
+		line = get_next_line(fd);
 	while (line)
 	{
-		line = get_next_line(fd);
 		printf("%s", line);
-		//free(line);
+		free(line);
+		line = get_next_line(fd);
 	}
 	close(fd);
 	return 0;
-}*/
-
+}
+*/
 /*
 int	main(void)
 {
