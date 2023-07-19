@@ -6,7 +6,7 @@
 /*   By: brandebr <brandebr@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 19:09:57 by brandebr          #+#    #+#             */
-/*   Updated: 2023/07/19 14:31:38 by brandebr         ###   ########.fr       */
+/*   Updated: 2023/07/19 14:26:23 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ static char	*get_line(char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer = NULL;
+	static char	*buffer[OPEN_MAX];
 	char		*line;
 	char		*temp;
 	int			i;
@@ -113,17 +113,17 @@ char	*get_next_line(int fd)
 	temp = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buffer = read_file(fd, buffer);
-	if (!buffer)
+	buffer[fd] = read_file(fd, buffer[fd]);
+	if (!buffer[fd])
 		return (NULL);
-	line = get_line(buffer);
+	line = get_line(buffer[fd]);
 	if (!line)
 	{
-		free(buffer);
-		buffer = (NULL);
+		free(buffer[fd]);
+		buffer[fd] = (NULL);
 	}
 	else 
-		buffer = clear_buffer(buffer, line);
+		buffer[fd] = clear_buffer(buffer[fd], line);
 	return (line);
 }
 /*
