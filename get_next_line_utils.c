@@ -6,7 +6,7 @@
 /*   By: brandebr <brandebr@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 19:31:22 by brandebr          #+#    #+#             */
-/*   Updated: 2023/07/18 14:08:59 by brandebr         ###   ########.fr       */
+/*   Updated: 2023/07/19 13:58:23 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strlen(const char *str)
 	size_t	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while (str[i] != '\0')
 		i++;
 	return (i);
@@ -26,9 +28,11 @@ char	*ft_strchr(char *s, int c)
 {
 	size_t	i;
 	size_t	len;
-	
-	i =  0;
+
+	i = 0;
 	len = ft_strlen(s);
+	if (!s)
+		return (NULL);
 	while (i <= len)
 	{
 		if (s[i] == (char)c)
@@ -48,48 +52,21 @@ char	*ft_strjoin(char *s1, char *s2)
 	j = 0;
 	if (!s1)
 		return (ft_strdup(s2));
-	willy =(char *)malloc(sizeof(char) * (ft_strlen(s1) +ft_strlen(s2) + 1));
+	willy = (char *)malloc(sizeof(char) * (ft_strlen(s1) +ft_strlen(s2) + 1));
 	if (!willy)
+	{
+		free(s1);
 		return (NULL);
+	}
 	while (s1[i])
 	{
 		willy[i] = s1[i];
 		i++;
 	}
 	while (s2[j])
-	{
-		willy[i] = s2[j];
-		i++;
-		j++;
-	}
+		willy[i++] = s2[j++];
 	willy[i] = '\0';
 	free(s1);
-	return (willy);
-}
-
-void	ft_bzero(void *s, size_t n)
-{
-	size_t			i;
-	unsigned char	*c;
-
-	i = 0;
-	c = s;
-	while (n > 0)
-	{
-		c[i] = '\0';
-		i++;
-		n--;
-	}
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*willy;
-	
-	willy = (void *)malloc(count * size);
-	if (!willy)
-		return (0);
-	ft_bzero(willy, count * size);
 	return (willy);
 }
 
@@ -121,4 +98,3 @@ char	*ft_strdup(const char *s1)
 	ft_strlcpy(willy, s1, len);
 	return (willy);
 }
-

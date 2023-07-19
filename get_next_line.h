@@ -6,7 +6,7 @@
 /*   By: brandebr <brandebr@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:04:43 by brandebr          #+#    #+#             */
-/*   Updated: 2023/07/18 16:27:23 by brandebr         ###   ########.fr       */
+/*   Updated: 2023/07/19 13:59:50 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@
 # include <stdio.h>
 # include <stdarg.h>
 # include <string.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 
 size_t	ft_strlen(const char *str);
 char	*ft_strchr(char *s, int c);
@@ -32,5 +32,5 @@ char	*ft_strjoin(char *s1, char *s2);
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 char	*get_next_line(int fd);
-char    *ft_strdup(const char *s1);
+char	*ft_strdup(const char *s1);
 #endif
