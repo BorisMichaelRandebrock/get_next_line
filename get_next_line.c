@@ -6,7 +6,7 @@
 /*   By: brandebr <brandebr@student.42barcelona.co  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 19:09:57 by brandebr          #+#    #+#             */
-/*   Updated: 2023/07/19 14:31:38 by brandebr         ###   ########.fr       */
+/*   Updated: 2023/07/21 11:08:51 by brandebr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ int main(void)
 	char *line;
 	int fd;
 
-	fd = open("./fsoares/multiple_nl.txt", O_RDONLY);
+	fd = open("./fsoares/variable_nls.txt", O_RDONLY);
 		line = get_next_line(fd);
 	while (line)
 	{
